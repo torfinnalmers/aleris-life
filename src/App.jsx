@@ -1,57 +1,26 @@
-import { useChat } from 'ai/react'
-import { useEffect, useRef } from 'react'
+import { useState } from 'react'
+import Landing from './components/Landing'
+import Chat from './components/Chat'
 
 function App() {
-  const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
-    api: '/api/chat',
-    initialMessages: [
-      { id: 'welcome', role: 'assistant', content: 'Hej! Jag kan svara på frågor om Aleris vårdtjänster. Vad vill du veta?' }
-    ],
-  })
+  const [showChat, setShowChat] = useState(false)
+  const [initialQuery, setInitialQuery] = useState('')
 
-  const messagesEndRef = useRef(null)
+  const handleStartChat = (query = '') => {
+    setInitialQuery(query)
+    setShowChat(true)
+  }
 
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages])
+  const handleBackToLanding = () => {
+    setShowChat(false)
+    setInitialQuery('')
+  }
 
-  return (
-    <div className="chat-container">
-      <header className="chat-header">
-        <h1>Aleris Life</h1>
-        <p>Din hälsoassistent</p>
-      </header>
+  if (showChat) {
+    return <Chat initialQuery={initialQuery} onBack={handleBackToLanding} />
+  }
 
-      <div className="messages">
-        {messages.map((msg) => (
-          <div key={msg.id} className={`message ${msg.role}`}>
-            {msg.content}
-          </div>
-        ))}
-        {isLoading && messages[messages.length - 1]?.role === 'user' && (
-          <div className="message assistant loading">
-            <span className="dot"></span>
-            <span className="dot"></span>
-            <span className="dot"></span>
-          </div>
-        )}
-        <div ref={messagesEndRef} />
-      </div>
-
-      <form onSubmit={handleSubmit} className="input-form">
-        <input
-          type="text"
-          value={input}
-          onChange={handleInputChange}
-          placeholder="Ställ en fråga om Aleris..."
-          disabled={isLoading}
-        />
-        <button type="submit" disabled={isLoading || !input.trim()}>
-          Skicka
-        </button>
-      </form>
-    </div>
-  )
+  return <Landing onStartChat={handleStartChat} />
 }
 
 export default App
