@@ -83,6 +83,35 @@ export default async function handler(req) {
 
   try {
     const { messages } = await req.json();
+    const lastMessage = messages[messages.length - 1]?.content || '';
+
+    // If no API key, return mock response
+    if (!process.env.ANTHROPIC_API_KEY) {
+      const mockResponse = `Tack för din fråga! Detta är en demo-version av Aleris Life.
+
+För att aktivera AI-assistenten behöver en Anthropic API-nyckel konfigureras.
+
+Under tiden kan du kontakta oss direkt:
+
+🇸🇪 **Sverige**: 010-350 00 00 eller aleris.se
+🇳🇴 **Norge**: 22 45 45 45 eller aleris.no
+🇩🇰 **Danmark**: 38 17 00 00 eller aleris.dk
+
+Vi hjälper dig gärna att hitta rätt vård!`;
+
+      // Return as streaming format
+      const encoder = new TextEncoder();
+      const stream = new ReadableStream({
+        start(controller) {
+          controller.enqueue(encoder.encode(`0:${JSON.stringify(mockResponse)}\n`));
+          controller.close();
+        },
+      });
+
+      return new Response(stream, {
+        headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+      });
+    }
 
     const result = await streamText({
       model: anthropic('claude-sonnet-4-20250514'),

@@ -1,8 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
 
-// Check if we're in local dev (no API available)
-const isLocalDev = window.location.hostname === 'localhost'
-
 function Chat({ initialQuery, onBack }) {
   const [messages, setMessages] = useState([
     {
@@ -46,18 +43,6 @@ function Chat({ initialQuery, onBack }) {
     const userMessage = { id: Date.now().toString(), role: 'user', content: text.trim() }
     setMessages(prev => [...prev, userMessage])
     setIsLoading(true)
-
-    if (isLocalDev) {
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      const mockResponse = {
-        id: (Date.now() + 1).toString(),
-        role: 'assistant',
-        content: `Tack för din fråga! I produktionsmiljön skulle jag hjälpa dig med: "${userMessage.content}"\n\nFör att testa med riktig AI, deploya till Vercel med din Anthropic API-nyckel.\n\n📞 Sverige: 010-350 00 00\n📞 Norge: 22 45 45 45\n📞 Danmark: 38 17 00 00`
-      }
-      setMessages(prev => [...prev, mockResponse])
-      setIsLoading(false)
-      return
-    }
 
     try {
       const response = await fetch('/api/chat', {
