@@ -87,7 +87,51 @@ export default async function handler(req) {
 
     // If no API key, return mock response
     if (!process.env.ANTHROPIC_API_KEY) {
-      const mockResponse = `Tack för din fråga! Detta är en demo-version av Aleris Life.
+      // Simple language detection based on common words
+      const text = lastMessage.toLowerCase();
+      const isNorwegian = /\b(jeg|hjelp|trenger|hvor|kan|vil|har|ikke|meg)\b/.test(text) && /\b(jeg|hjelp|trenger)\b/.test(text);
+      const isDanish = /\b(jeg|hjælp|behøver|hvor|mig|vil|har|ikke)\b/.test(text) && /\b(hjælp|behøver)\b/.test(text);
+      const isEnglish = /\b(i |help|need|want|where|can|have|my|the)\b/i.test(text);
+
+      let mockResponse;
+      if (isNorwegian) {
+        mockResponse = `Takk for spørsmålet! Dette er en demo-versjon av Aleris Life.
+
+For å aktivere AI-assistenten må en Anthropic API-nøkkel konfigureres.
+
+I mellomtiden kan du kontakte oss direkte:
+
+🇳🇴 **Norge**: 22 45 45 45 eller aleris.no
+🇸🇪 **Sverige**: 010-350 00 00 eller aleris.se
+🇩🇰 **Danmark**: 38 17 00 00 eller aleris.dk
+
+Vi hjelper deg gjerne med å finne riktig behandling!`;
+      } else if (isDanish) {
+        mockResponse = `Tak for dit spørgsmål! Dette er en demo-version af Aleris Life.
+
+For at aktivere AI-assistenten skal en Anthropic API-nøgle konfigureres.
+
+I mellemtiden kan du kontakte os direkte:
+
+🇩🇰 **Danmark**: 38 17 00 00 eller aleris.dk
+🇸🇪 **Sverige**: 010-350 00 00 eller aleris.se
+🇳🇴 **Norge**: 22 45 45 45 eller aleris.no
+
+Vi hjælper dig gerne med at finde den rette behandling!`;
+      } else if (isEnglish) {
+        mockResponse = `Thank you for your question! This is a demo version of Aleris Life.
+
+To activate the AI assistant, an Anthropic API key needs to be configured.
+
+In the meantime, you can contact us directly:
+
+🇸🇪 **Sweden**: 010-350 00 00 or aleris.se
+🇳🇴 **Norway**: 22 45 45 45 or aleris.no
+🇩🇰 **Denmark**: 38 17 00 00 or aleris.dk
+
+We're happy to help you find the right care!`;
+      } else {
+        mockResponse = `Tack för din fråga! Detta är en demo-version av Aleris Life.
 
 För att aktivera AI-assistenten behöver en Anthropic API-nyckel konfigureras.
 
@@ -98,6 +142,7 @@ Under tiden kan du kontakta oss direkt:
 🇩🇰 **Danmark**: 38 17 00 00 eller aleris.dk
 
 Vi hjälper dig gärna att hitta rätt vård!`;
+      }
 
       // Return as streaming format
       const encoder = new TextEncoder();

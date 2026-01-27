@@ -1,11 +1,24 @@
 import { useEffect, useRef, useState } from 'react'
 
+const WELCOME_MESSAGES = {
+  sv: 'Hej! Jag hjälper dig att hitta rätt vård hos Aleris. Berätta vad du behöver hjälp med så guidar jag dig vidare.',
+  no: 'Hei! Jeg hjelper deg med å finne riktig behandling hos Aleris. Fortell meg hva du trenger hjelp med, så veileder jeg deg videre.',
+  da: 'Hej! Jeg hjælper dig med at finde den rette behandling hos Aleris. Fortæl mig, hvad du har brug for hjælp til, så guider jeg dig videre.',
+  en: 'Hi! I help you find the right care at Aleris. Tell me what you need help with and I\'ll guide you further.'
+}
+
+function getWelcomeMessage() {
+  const lang = navigator.language?.slice(0, 2) || 'en'
+  if (lang === 'nb' || lang === 'nn') return WELCOME_MESSAGES.no
+  return WELCOME_MESSAGES[lang] || WELCOME_MESSAGES.en
+}
+
 function Chat({ initialQuery, onBack }) {
   const [messages, setMessages] = useState([
     {
       id: 'welcome',
       role: 'assistant',
-      content: 'Hej! Jag hjälper dig att hitta rätt vård hos Aleris. Berätta vad du behöver hjälp med så guidar jag dig vidare.'
+      content: getWelcomeMessage()
     }
   ])
   const [input, setInput] = useState('')
