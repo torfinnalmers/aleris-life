@@ -28,6 +28,7 @@ function BlogPost() {
   return (
     <BlogLayout>
       <article className="blog-post">
+        <Link to="/blog" className="back-link back-link-top">← All updates</Link>
         <h1>{post.title}</h1>
         <div className="post-meta">
           {new Date(post.date).toLocaleDateString('sv-SE')} · {post.authors}

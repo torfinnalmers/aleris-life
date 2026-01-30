@@ -714,6 +714,12 @@ body {
   color: #E86829;
 }
 
+.back-link-top {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-size: 0.9375rem;
+}
+
 /* FAQ specific */
 .faq-content h2 {
   margin-top: 2.5rem;
