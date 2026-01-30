@@ -54,11 +54,11 @@ function Landing({ onStartChat }) {
         </div>
 
         <h1 className="landing-headline">
-          Vi guidar dig till rätt vård – <span className="highlight">snabbt, tryggt och personligt</span>
+          Vi guidar dig till rätt vård – <span className="highlight">i Sverige, Norge och Danmark</span>
         </h1>
 
         <p className="landing-subtext">
-          Här får du vägledning direkt. Vi lyssnar på vad du behöver och sätter dig i kontakt med rätt specialist hos oss.
+          Berätta vad du behöver hjälp med så guidar vi dig till rätt mottagning och specialist hos Aleris.
         </p>
 
         <p className="landing-price">
@@ -89,7 +89,7 @@ function Landing({ onStartChat }) {
 
       <section className="landing-bottom">
         <h2>
-          <span className="highlight-dark">Smart teknik</span> – för att du ska få <span className="highlight">trygg hjälp.</span>
+          <span className="highlight-dark">Smart teknik</span> – för att du ska få <span className="highlight-orange">trygg hjälp.</span>
         </h2>
         <p>
           Vi kombinerar AI med medicinsk expertis för att ge dig snabb och pålitlig vägledning till rätt vård.
