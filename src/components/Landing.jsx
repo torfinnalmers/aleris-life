@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 
 const PLACEHOLDER_QUERIES = [
   "Jag behöver en second opinion...",
@@ -33,7 +34,7 @@ function Landing({ onStartChat }) {
         <div className="logo">
           <img src="/aleris-logo.svg" alt="Aleris" className="logo-img" />
         </div>
-        <button className="login-btn">Logga in</button>
+        <Link to="/blog" className="login-btn">Blog</Link>
       </header>
 
       <main className="landing-main">

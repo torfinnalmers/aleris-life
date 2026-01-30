@@ -44,6 +44,7 @@ body {
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
+  text-decoration: none;
 }
 
 .login-btn:hover {
@@ -509,5 +510,242 @@ body {
 @supports (padding-bottom: env(safe-area-inset-bottom)) {
   .chat-disclaimer {
     padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+  }
+}
+
+/* ============================================
+   BLOG
+   ============================================ */
+
+.blog-container {
+  min-height: 100dvh;
+  background: #F5F1E8;
+}
+
+.blog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 1.5rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.blog-logo img {
+  height: 28px;
+  width: auto;
+}
+
+.blog-nav-btn {
+  background: transparent;
+  border: 2px solid #1A4D5C;
+  color: #1A4D5C;
+  padding: 0.5rem 1.25rem;
+  border-radius: 25px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.blog-nav-btn:hover {
+  background: #1A4D5C;
+  color: white;
+}
+
+.blog-main {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 1.5rem 4rem;
+}
+
+/* Blog Index */
+.blog-index h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #1A4D5C;
+  margin-bottom: 0.75rem;
+}
+
+.blog-intro {
+  font-size: 1.125rem;
+  color: #555;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.faq-link {
+  display: inline-block;
+  color: #E86829;
+  font-weight: 500;
+  margin-bottom: 2.5rem;
+}
+
+.faq-link:hover {
+  text-decoration: none;
+}
+
+.post-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.post-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.post-card h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.post-card h2 a {
+  color: #1A4D5C;
+  text-decoration: none;
+}
+
+.post-card h2 a:hover {
+  color: #E86829;
+}
+
+.post-meta {
+  font-size: 0.875rem;
+  color: #888;
+  margin-bottom: 0.75rem;
+}
+
+.post-preview {
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 0.75rem;
+}
+
+.read-more {
+  color: #E86829;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.read-more:hover {
+  text-decoration: underline;
+}
+
+/* Blog Post */
+.blog-post h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #1A4D5C;
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+}
+
+.blog-post > .post-meta {
+  font-size: 0.9375rem;
+  color: #888;
+  margin-bottom: 2rem;
+}
+
+.post-content {
+  font-size: 1.0625rem;
+  line-height: 1.8;
+  color: #333;
+}
+
+.post-content p {
+  margin-bottom: 1.25rem;
+}
+
+.post-content strong {
+  font-weight: 600;
+  color: #1A4D5C;
+}
+
+.post-content h2 {
+  font-size: 1.375rem;
+  font-weight: 600;
+  color: #1A4D5C;
+  margin: 2rem 0 1rem;
+}
+
+.post-content h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1A4D5C;
+  margin: 1.5rem 0 0.5rem;
+}
+
+.post-content ul,
+.post-content ol {
+  margin-bottom: 1.25rem;
+  padding-left: 1.5rem;
+}
+
+.post-content li {
+  margin-bottom: 0.5rem;
+}
+
+.post-content a {
+  color: #E86829;
+}
+
+.post-content a:hover {
+  text-decoration: none;
+}
+
+.post-content em {
+  font-style: italic;
+  color: #666;
+}
+
+.back-link {
+  display: inline-block;
+  margin-top: 3rem;
+  color: #1A4D5C;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.back-link:hover {
+  color: #E86829;
+}
+
+/* FAQ specific */
+.faq-content h2 {
+  margin-top: 2.5rem;
+}
+
+.faq-content h2:first-child {
+  margin-top: 0;
+}
+
+.faq-content h3 {
+  margin-top: 1.5rem;
+}
+
+.faq-content p {
+  margin-bottom: 1rem;
+}
+
+/* Blog responsive */
+@media (min-width: 768px) {
+  .blog-header {
+    padding: 2rem 2rem;
+  }
+
+  .blog-main {
+    padding: 0 2rem 5rem;
+  }
+
+  .blog-index h1 {
+    font-size: 2.5rem;
+  }
+
+  .blog-post h1 {
+    font-size: 2.5rem;
   }
 }
