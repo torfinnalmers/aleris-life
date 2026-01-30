@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import ReactMarkdown from 'react-markdown'
 
 const WELCOME_MESSAGES = {
   sv: 'Hej! Jag hjälper dig att hitta rätt vård hos Aleris. Berätta vad du behöver hjälp med så guidar jag dig vidare.',
@@ -121,7 +122,11 @@ function Chat({ initialQuery, onBack }) {
               </div>
             )}
             <div className="message-content">
-              {msg.content}
+              {msg.role === 'assistant' ? (
+                <ReactMarkdown>{msg.content}</ReactMarkdown>
+              ) : (
+                msg.content
+              )}
             </div>
           </div>
         ))}
