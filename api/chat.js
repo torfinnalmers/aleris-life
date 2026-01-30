@@ -1,9 +1,73 @@
 import { anthropic } from '@ai-sdk/anthropic';
 import { streamText } from 'ai';
+import {
+  searchContent,
+  fetchLocationPages,
+  formatLocationsForContext,
+  isOptimizelyConfigured,
+} from './optimizely.js';
 
 export const config = {
   runtime: 'edge',
 };
+
+/**
+ * Extract potential search terms from user message
+ * Looks for clinic names, medical specialties, locations, etc.
+ */
+function extractSearchTerms(message) {
+  const text = message.toLowerCase();
+
+  // Common medical terms and specialties (Swedish/Norwegian/Danish/English)
+  const medicalTerms = [
+    'ortopedi', 'ortopedisk', 'orthopedic', 'ortopedi',
+    'kardiologi', 'hjärta', 'hjerte', 'heart', 'cardiology',
+    'dermatologi', 'hud', 'skin', 'dermatology',
+    'gynekologi', 'gynekolog', 'gynecology',
+    'urologi', 'urolog', 'urology',
+    'fertilitet', 'fertility', 'ivf',
+    'ögon', 'øye', 'øjen', 'eye', 'ophthalmology',
+    'tand', 'tann', 'dental', 'dentist',
+    'psykiatri', 'psykolog', 'psychiatry', 'psychology',
+    'röntgen', 'radiologi', 'radiology', 'x-ray',
+    'kirurgi', 'surgery', 'operation',
+  ];
+
+  // Swedish/Norwegian cities and regions
+  const locations = [
+    'stockholm', 'göteborg', 'malmö', 'uppsala', 'linköping',
+    'oslo', 'bergen', 'trondheim', 'stavanger',
+    'köpenhamn', 'københavn', 'copenhagen', 'aarhus', 'odense',
+  ];
+
+  const terms = [];
+
+  // Check for medical terms
+  for (const term of medicalTerms) {
+    if (text.includes(term)) {
+      terms.push(term);
+    }
+  }
+
+  // Check for locations
+  for (const location of locations) {
+    if (text.includes(location)) {
+      terms.push(location);
+    }
+  }
+
+  // Extract capitalized words that might be clinic names
+  const capitalized = message.match(/[A-ZÄÖÅÆØ][a-zäöåæø]+/g);
+  if (capitalized) {
+    const filtered = capitalized.filter(word =>
+      word.length > 3 &&
+      !['Hej', 'Hei', 'Hello', 'Tack', 'Takk', 'Thanks'].includes(word)
+    );
+    terms.push(...filtered.slice(0, 3));
+  }
+
+  return [...new Set(terms)].slice(0, 5); // Dedupe and limit
+}
 
 const SYSTEM_PROMPT = `You are a helpful healthcare guidance assistant for Aleris, a leading private healthcare provider in Scandinavia with clinics in Sweden, Norway, and Denmark.
 
@@ -158,13 +222,59 @@ Vi hjälper dig gärna att hitta rätt vård!`;
       });
     }
 
-    const result = await streamText({
+    // Fetch relevant content from Optimizely if configured
+    let contentContext = '';
+
+    if (isOptimizelyConfigured()) {
+      try {
+        // Extract potential search terms from the user's message
+        const searchTerms = extractSearchTerms(lastMessage);
+
+        if (searchTerms.length > 0) {
+          // Search for relevant content
+          const searchResults = await Promise.all(
+            searchTerms.map(term => searchContent(term))
+          );
+          const allResults = searchResults.flat();
+
+          if (allResults.length > 0) {
+            contentContext = `\n\n## Relevant Content from Aleris Website\n${formatLocationsForContext(allResults)}`;
+          }
+        } else {
+          // Fetch general location info for broad questions
+          const locations = await fetchLocationPages();
+          if (locations.length > 0) {
+            contentContext = `\n\n## Available Locations\n${formatLocationsForContext(locations.slice(0, 10))}`;
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching Optimizely content:', error);
+        // Continue without Optimizely content
+      }
+    }
+
+    const systemWithContent = SYSTEM_PROMPT + contentContext;
+
+    const result = streamText({
       model: anthropic('claude-sonnet-4-20250514'),
-      system: SYSTEM_PROMPT,
+      system: systemWithContent,
       messages,
     });
 
-    return result.toDataStreamResponse();
+    // Convert to the format the frontend expects (0: prefixed JSON)
+    const stream = new ReadableStream({
+      async start(controller) {
+        const encoder = new TextEncoder();
+        for await (const chunk of result.textStream) {
+          controller.enqueue(encoder.encode(`0:${JSON.stringify(chunk)}\n`));
+        }
+        controller.close();
+      },
+    });
+
+    return new Response(stream, {
+      headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+    });
   } catch (error) {
     console.error('Chat API error:', error);
     return new Response(
