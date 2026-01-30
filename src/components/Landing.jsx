@@ -54,7 +54,7 @@ function Landing({ onStartChat }) {
         </div>
 
         <h1 className="landing-headline">
-          Vi guidar dig till rätt vård – <span className="highlight">i Sverige, Norge och Danmark</span>
+          Vi guidar dig till rätt vård – i Sverige, Norge och Danmark
         </h1>
 
         <p className="landing-subtext">
@@ -89,7 +89,7 @@ function Landing({ onStartChat }) {
 
       <section className="landing-bottom">
         <h2>
-          Smart teknik – för att du ska få <span className="highlight">trygg hjälp.</span>
+          Smart teknik – för att du ska få trygg hjälp.
         </h2>
         <p>
           Vi kombinerar AI med medicinsk expertis för att ge dig snabb och pålitlig vägledning till rätt vård.
