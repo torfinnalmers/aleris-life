@@ -89,7 +89,7 @@ function Landing({ onStartChat }) {
 
       <section className="landing-bottom">
         <h2>
-          <span className="highlight-dark">Smart teknik</span> – för att du ska få <span className="highlight-orange">trygg hjälp.</span>
+          Smart teknik – för att du ska få <span className="highlight">trygg hjälp.</span>
         </h2>
         <p>
           Vi kombinerar AI med medicinsk expertis för att ge dig snabb och pålitlig vägledning till rätt vård.
