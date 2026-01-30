@@ -649,43 +649,48 @@ body {
   margin-bottom: 2rem;
 }
 
+/* Golden Ratio Typography: φ = 1.618 */
 .post-content {
   font-size: 1.0625rem;
-  line-height: 1.8;
-  color: #333;
+  line-height: 1.618;
 }
 
 .post-content p {
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.618em;
 }
 
 .post-content strong {
   font-weight: 600;
-  color: #1A4D5C;
 }
 
 .post-content h2 {
-  font-size: 1.375rem;
+  font-size: 1.618em;
   font-weight: 600;
-  color: #1A4D5C;
-  margin: 2rem 0 1rem;
+  line-height: 1.2;
+  margin-top: 2.618em;
+  margin-bottom: 0.618em;
 }
 
 .post-content h3 {
-  font-size: 1.125rem;
+  font-size: 1.272em;
   font-weight: 600;
-  color: #1A4D5C;
-  margin: 1.5rem 0 0.5rem;
+  line-height: 1.3;
+  margin-top: 1.618em;
+  margin-bottom: 0.618em;
 }
 
 .post-content ul,
 .post-content ol {
-  margin-bottom: 1.25rem;
-  padding-left: 1.5rem;
+  margin-bottom: 1.618em;
+  padding-left: 1.618em;
 }
 
 .post-content li {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.618em;
+}
+
+.post-content li:last-child {
+  margin-bottom: 0;
 }
 
 .post-content a {
@@ -698,7 +703,6 @@ body {
 
 .post-content em {
   font-style: italic;
-  color: #666;
 }
 
 .back-link {
@@ -720,20 +724,12 @@ body {
 }
 
 /* FAQ specific */
-.faq-content h2 {
-  margin-top: 2.5rem;
-}
-
 .faq-content h2:first-child {
   margin-top: 0;
 }
 
-.faq-content h3 {
-  margin-top: 1.5rem;
-}
-
 .faq-content p {
-  margin-bottom: 1rem;
+  margin-bottom: 1em;
 }
 
 /* Blog responsive */
